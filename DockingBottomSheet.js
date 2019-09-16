@@ -2,7 +2,7 @@
     Author: Rajat Soni
     Email: iamrajat29@gmail.com
     GitHub: https://github.com/iamrajatsoni
-    NPM: https://www.npmjs.com/~rajatsoni
+    npm: https://www.npmjs.com/~rajatsoni
  */
 import React, { PureComponent } from 'react';
 import {
@@ -12,6 +12,7 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
@@ -35,10 +36,11 @@ const scrollViewStyles = {
 export default class DockingBottomSheet extends PureComponent {
   
   static defaultProps = {
+    containerStyle: { flex: 1 },
     dockHeight: 96,
-    topSpacing: 128,
-    darknessLimit: 0.7,
-    scaleLimit: 0.9,
+    sheetExpandedTopOffset: 128,
+    sheetDarknessAlpha: 0.7,
+    mainViewDownScale: 0.9,
     mainContentView: () => null,
     bottomSheetContentView: () => null,
   }
@@ -46,8 +48,8 @@ export default class DockingBottomSheet extends PureComponent {
   constructor( props ) {
     super( props );
 
-    this.dockHeight = props.dockHeight;
-    this.topSpacing = props.topSpacing;
+    this.topSpacing = props.sheetExpandedTopOffset;
+    this.viewHeight = DEVICE_HEIGHT;
     
     this.state = {
       scrollViewPointerEvents: 'none',
@@ -96,8 +98,30 @@ export default class DockingBottomSheet extends PureComponent {
     });
   }
 
+  componentDidUpdate() {
+    this.calculateTopSpacing();
+  }
+
+  dockBottomSheet() {
+    this.setState({
+      scrollViewPointerEvents: 'none',
+      pointerEventTogglerPE: null
+    }, () => {
+      this.doScroll(0, true);
+    });
+  }
+
+  expandBottomSheet() {
+    this.setState({
+      scrollViewPointerEvents: null,
+      pointerEventTogglerPE: 'none'
+    }, () => {
+      this.doScroll(this.topSpacing, true);
+    });
+  }
+
   doScroll(y, animated) {
-    this.parentScrollViewRef.scrollTo( {
+    this.bottomSheetRef.scrollTo( {
       x: 0,
       y,
       animated,
@@ -105,16 +129,29 @@ export default class DockingBottomSheet extends PureComponent {
   }
 
   setParentScrollViewRef( ref ) {
-    this.parentScrollViewRef = ref;
+    this.bottomSheetRef = ref;
   }
 
   onContainerLayout( event ) {
     const layout = event.nativeEvent.layout;
-    
-    this.topSpacing = layout.height - this.dockHeight - this.props.topSpacing;
-    this.setState({
-      scrollViewTopSpacing: layout.height - this.dockHeight,
-    })
+    this.viewHeight = layout.height
+
+    this.calculateTopSpacing();
+  }
+
+  calculateTopSpacing() {
+    this.topSpacing = this.viewHeight - this.props.dockHeight - this.props.sheetExpandedTopOffset;
+    const calculatedSVTopSpacing = this.getScrollViewTopSpacing();
+
+    if (this.state.scrollViewTopSpacing !== calculatedSVTopSpacing) {
+      this.setState({
+        scrollViewTopSpacing: calculatedSVTopSpacing,
+      })
+    }
+  }
+
+  getScrollViewTopSpacing() {
+    return this.viewHeight - this.props.dockHeight
   }
 
   parentOnScrollBeginDrag() {
@@ -127,6 +164,7 @@ export default class DockingBottomSheet extends PureComponent {
 
     if ( Math.abs( this.parentScrollVelocityYCache ) < 0.085
       && evt.nativeEvent.contentOffset.y < this.topSpacing ) { // docking at bottom
+
       this.doScroll(0, true);
       this.isSystemScroll = false;
       this.shouldDockAtBottom = true;
@@ -156,6 +194,10 @@ export default class DockingBottomSheet extends PureComponent {
     
     if ( Platform.OS !== 'ios' ) {
       this.parentScrollVelocityYCache = nativeEvent.velocity.y;
+    } else {
+      if (nativeEvent.velocity) {        
+        this.parentScrollVelocityYCache = nativeEvent.velocity.y;
+      }
     }
 
     if ( this.isSystemScroll ) {
@@ -177,18 +219,18 @@ export default class DockingBottomSheet extends PureComponent {
 
   render() {
     const scrollBgColor = this.state.scrollY.interpolate({
-      inputRange: [0, this.topSpacing],
-      outputRange: [TRANSPARENT, `rgba(0, 0, 0, ${ this.props.darknessLimit })`]
+      inputRange: [0, this.topSpacing, DEVICE_HEIGHT],
+      outputRange: [TRANSPARENT, `rgba(0, 0, 0, ${ this.props.sheetDarknessAlpha })`, `rgba(0, 0, 0, ${ this.props.sheetDarknessAlpha })`]
     });
 
     const mainViewScale = this.state.scrollY.interpolate({
       inputRange: [-this.topSpacing, 0, this.topSpacing],
-      outputRange: [1, 1, this.props.scaleLimit]
+      outputRange: [1, 1, this.props.mainViewDownScale]
     });
 
     return (
       <View
-        style={ { flex: 1 } }
+        style={ this.props.containerStyle }
         onLayout={ this.onContainerLayout } >
         <Animated.View
           style={ [
@@ -215,7 +257,7 @@ export default class DockingBottomSheet extends PureComponent {
             onScroll={ this.parentOnScroll }
           >
             <TouchableOpacity
-              onPress={()=>this.doScroll(0, true)}
+              onPress={() => this.dockBottomSheet()}
               style={{ height: this.state.scrollViewTopSpacing }}/>
 
             <View style={ { elevation:8 } }>
@@ -229,7 +271,7 @@ export default class DockingBottomSheet extends PureComponent {
           pointerEvents={this.state.pointerEventTogglerPE}
           style={ {
             width: DEVICE_WIDTH,
-            height: this.dockHeight,
+            height: this.props.dockHeight,
             backgroundColor: '#0000',
             position: 'absolute',
             left: 0,
