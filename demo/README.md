@@ -1,5 +1,5 @@
 # Docking-Bottom-Sheet demo
-**A React Native demo in **Expo** for [Docking Bottom Sheet](https://www.npmjs.com/package/docking-bottom-sheet)
+**A React Native demo in **Expo** for [Docking Bottom Sheet](https://www.npmjs.com/package/docking-bottom-sheet)<br>
 Run `npm install` inside directory after cloning.**
 
 To understand how it works, refer links below:

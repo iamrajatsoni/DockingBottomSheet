@@ -2,6 +2,7 @@
 
 # docking-bottom-sheet [![NPM version](https://badge.fury.io/js/docking-bottom-sheet.svg)](https://npmjs.org/package/docking-bottom-sheet) [![Build Status](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet.svg?branch=master)](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet)
 npm link: [https://www.npmjs.com/package/docking-bottom-sheet](https://www.npmjs.com/package/docking-bottom-sheet)
+Demo link: [https://github.com/iamrajatsoni/DockingBottomSheet/tree/master/demo](https://github.com/iamrajatsoni/DockingBottomSheet/tree/master/demo)
 
 <img align="right" src="https://cdn-images-1.medium.com/max/1600/1*6r_ovW9OgoEdLxjSNuZTiA.gif" alt="DockingBottomSheet" hspace="24px" z-index="7"/>
 
