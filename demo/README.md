@@ -1,8 +1,10 @@
 # Docking-Bottom-Sheet demo
-**A React Native demo in **Expo** for [Docking Bottom Sheet](https://www.npmjs.com/package/docking-bottom-sheet)<br>
-Run `npm install` inside directory after cloning.**
+**A React Native demo in Expo for [Docking Bottom Sheet](https://www.npmjs.com/package/docking-bottom-sheet)**
+- `npm install` inside this directory after cloning.
+- Make sure you have `expo` installed, if not refer [this doc](https://facebook.github.io/react-native/docs/getting-started)
+- Run `expo start` command from this directory.
 
-To understand how it works, refer links below:
+To understand how [it](https://www.npmjs.com/package/docking-bottom-sheet) works, refer links below:
 - [npm](https://www.npmjs.com/package/docking-bottom-sheet)
 - [GitHub](https://github.com/iamrajatsoni/DockingBottomSheet)
 <br>
