@@ -1,6 +1,6 @@
 
 
-# docking-bottom-sheet [![NPM version](https://badge.fury.io/js/docking-bottom-sheet.svg)](https://npmjs.org/package/docking-bottom-sheet) [![Build Status](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet.svg?branch=master)](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet)
+# docking-bottom-sheet [![NPM version](https://badge.fury.io/js/docking-bottom-sheet.svg)](https://npmjs.org/package/docking-bottom-sheet) [![Downloads](https://img.shields.io/npm/dt/docking-bottom-sheet.svg)](https://img.shields.io/npm/dt/docking-bottom-sheet.svg) [![Build Status](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet.svg?branch=master)](https://travis-ci.org/Rajat%20Soni/docking-bottom-sheet)
 npm link: [https://www.npmjs.com/package/docking-bottom-sheet](https://www.npmjs.com/package/docking-bottom-sheet)<br>
 Demo link: [https://github.com/iamrajatsoni/DockingBottomSheet/tree/master/demo](https://github.com/iamrajatsoni/DockingBottomSheet/tree/master/demo)
 
